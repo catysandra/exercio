@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        h1 {
+            color: black;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 20px;
+            border: solid 2px black;
+            text-align: left;
+        }
+        th {
+            background-color: #da1aca;
+        }
+        .task {
+            color: rgba(0, 0, 255, 0.836);
+        }
+        .completed {
+            color: green;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        button {
+            margin-left: 20px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: none;
+            background-color: rgb(85, 201, 8);
+            color: white;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: green;
+            padding: 9px;
+        }
+        td {
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Tarefas</h1>
+    
+    <input type="text" id="taskInput" placeholder="Adicionar nova tarefa">
+    <input type="datetime-local" id="startDate" placeholder="Data de Início">
+    <input type="datetime-local" id="endDate" placeholder="Data de Término">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+    <button onclick="confirmClearTasks()">Limpar Tarefas</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tarefa</th>
+                <th>tempo Início</th>
+                <th>tempo Término</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="taskList"></tbody>
+    </table>
+    
+    <script>
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const taskText = input.value.trim();
+
+            if (taskText) {
+                const tr = document.createElement('tr');
+                tr.className = 'task';
+                tr.innerHTML = `
+                    <td><span>${taskText}</span></td>
+                    <td>${startDate}</td>
+                    <td>${endDate}</td>
+                    
+                    <td>
+
+                      <button onclick="editTask(this)">✏️ atualizar </button
+                        <button onclick="completeTask(this)">✔️certo </button>
+                        <button onclick="removeTask(this)">❌ eliminar</button>
+                    
+                    </td>
+                `;
+                document.getElementById('taskList').appendChild(tr);
+                input.value = '';
+                document.getElementById('startDate').value = '';
+                document.getElementById('endDate').value = '';
+            }
+        }
+
+        function removeTask(button) {
+            const tr = button.closest('tr');
+            tr.remove();
+        }
+
+        function confirmClearTasks() {
+            const confirmation = confirm("Tem certeza que deseja limpar todas as tarefas?");
+            if (confirmation) {
+                clearTasks();
+            }
+            
+        } 
+
+        function clearTasks() {
+            document.getElementById('taskList').innerHTML = '';
+        }
+        function completeTask(button) {
+    const tr = button.closest('tr');
+    tr.className = 'completed';
+
+    // Remove o botão de concluir
+    button.remove();
+
+    // Cria um novo elemento para mostrar que a tarefa foi concluída
+    const completedMessage = document.createElement('span');
+    completedMessage.textContent = 'Tarefa concluída';
+
+    // Adiciona a mensagem na célula de ações
+    const actionsCell = tr.querySelector('td:last-child');
+    actionsCell.appendChild(completedMessage);
+}
+
+        function editTask(button) {
+            const tr = button.closest('tr');
+            const span = tr.querySelector('span');
+            const newTaskText = prompt("Edite sua tarefa:", span.innerText);
+            if (newTaskText) {
+                span.innerText = newTaskText;
+            }
+        }
+    </script>
+</body>
+</html>

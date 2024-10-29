@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> tabela alunos</h1>
+    <input type="text" id="nameInput" placeholder="Digite um nome">
+    <button id="addButton">Adicionar</button>
+    
+    <table id="nameTable">
+        <thead>
+           
+        </thead>
+        <tbody>
+            <!-- As linhas serão adicionadas aqui -->
+        </tbody>
+    </table>
+
+<script> 
+ 
+let idCounter = 1; // Contador para o número das linhas
+
+// Adiciona um evento de clique no botão
+document.getElementById('addButton').addEventListener('click', addName);
+
+function addName() {
+    const nameInput = document.getElementById('nameInput'); // Obtém o campo de entrada
+    const nameValue = nameInput.value.trim(); // Remove espaços em branco
+
+    // Verifica se o campo de entrada está vazio
+    if (nameValue === '') {
+        alert('Por favor, digite um nome.');
+        return;
+    }
+
+    const nameTableBody = document.querySelector('#nameTable tbody'); // Seleciona o corpo da tabela
+    const row = document.createElement('tr'); // Cria uma nova linha
+
+    // Criar a célula para o número
+    const numberCell = document.createElement('td');
+    numberCell.textContent = idCounter++; // Adiciona o contador
+    row.appendChild(numberCell); // Adiciona a célula à linha
+
+    // Criar a célula para o nome
+    const nameCell = document.createElement('td');
+    nameCell.textContent = nameValue; // Adiciona o nome
+    row.appendChild(nameCell); // Adiciona a célula à linha
+
+    // Criar a célula para ações
+    const actionsCell = document.createElement('td');
+
+    // Botão de editar
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Editar'; // Define o texto do botão
+    editButton.onclick = function () {
+        const newName = prompt('Editar nome:', nameValue); // Solicita um novo nome
+        if (newName) {
+            nameCell.textContent = newName; // Atualiza o nome na tabela
+        }
+    };
+    actionsCell.appendChild(editButton); // Adiciona o botão à célula de ações
+
+    // Botão de remover
+    const removeButton = document.createElement('button');
+    removeButton.textContent = 'Remover'; // Define o texto do botão
+    removeButton.onclick = function () {
+        nameTableBody.removeChild(row); // Remove a linha da tabela
+    };
+    actionsCell.appendChild(removeButton); // Adiciona o botão à célula de ações
+
+    row.appendChild(actionsCell); // Adiciona a célula de ações à linha
+    nameTableBody.appendChild(row); // Adiciona a nova linha ao corpo da tabela
+
+    // Limpar o campo de entrada
+    nameInput.value = '';
+}
+
+ 
+        
+</script>
+</body>
+
+
+    
+
+</html>

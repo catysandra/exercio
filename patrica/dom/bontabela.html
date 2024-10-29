@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela em JavaScript</title>
+    <style>
+        table {
+            width: 100%;
+            border-bottom: #da1aca;
+        }
+        th, td {
+            border: 1px solid red;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #da1aca;
+        }
+        button {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>lista</h1>
+
+    <div id="tabela-container"></div>
+
+    <form id="form-adicionar">
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="number" id="idade" placeholder="Idade" required>
+        <input type="text" id="cidade" placeholder="zona" required>
+        <input type="hidden" id="index" value="-1">
+        <button type="submit">Adicionar/Editar</button>
+    </form>
+
+    <script>
+        // Dados da tabela
+        let dados = [
+            { nome: "João", idade: 28, cidade: "São Paulo" },
+            { nome: "Maria", idade: 22, cidade: " eugenio lima" },
+            { nome: "Pedro", idade: 32, cidade: " sao pedro" }
+        ];
+
+        // Função para criar a tabela
+        function criarTabela(dados) {
+            const tabela = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Criar cabeçalho
+            const cabecalho = document.createElement('tr');
+            const colunas = ['Nome', 'Idade', 'zona', 'Ações'];
+
+            colunas.forEach(coluna => {
+                const th = document.createElement('th');
+                th.textContent = coluna;
+                cabecalho.appendChild(th);
+            });
+            thead.appendChild(cabecalho);
+            tabela.appendChild(thead);
+
+            // Criar linhas de dados
+            dados.forEach((dado, index) => {
+                const tr = document.createElement('tr');
+                Object.values(dado).forEach(valor => {
+                    const td = document.createElement('td');
+                    td.textContent = valor;
+                    tr.appendChild(td);
+                });
+
+                // Botões de editar e remover
+                const tdAcoes = document.createElement('td');
+                const btnEditar = document.createElement('button');
+                btnEditar.textContent = 'Editar';
+                btnEditar.onclick = () => editarDado(index);
+                tdAcoes.appendChild(btnEditar);
+
+                const btnRemover = document.createElement('button');
+                btnRemover.textContent = 'Remover';
+                btnRemover.onclick = () => removerDado(index);
+                tdAcoes.appendChild(btnRemover);
+
+                tr.appendChild(tdAcoes);
+                tbody.appendChild(tr);
+            });
+            tabela.appendChild(tbody);
+
+            return tabela;
+        }
+
+        // Função para atualizar a tabela
+        function atualizarTabela() {
+            const tabelaContainer = document.getElementById('tabela-container');
+            tabelaContainer.innerHTML = ''; // Limpar o container
+            const tabela = criarTabela(dados);
+            tabelaContainer.appendChild(tabela);
+        }
+
+        // Função para adicionar ou editar um dado
+        document.getElementById('form-adicionar').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar o envio do formulário
+            const nome = document.getElementById('nome').value;
+            const idade = document.getElementById('idade').value;
+            const cidade = document.getElementById('cidade').value;
+            const index = document.getElementById('index').value;
+
+            if (index === '-1') {
+                // Adicionar novo dado
+                dados.push({ nome, idade: Number(idade), cidade });
+            } else {
+                // Editar dado existente
+                dados[index] = { nome, idade: Number(idade), cidade };
+                document.getElementById('index').value = '-1'; // Resetar índice
+            }
+
+            atualizarTabela(); // Atualizar a tabela
+            this.reset(); // Limpar o formulário
+        });
+
+        // Função para editar um dado
+        function editarDado(index) {
+            const dado = dados[index];
+            document.getElementById('nome').value = dado.nome;
+            document.getElementById('idade').value = dado.idade;
+            document.getElementById('cidade').value = dado.cidade;
+            document.getElementById('index').value = index; // Armazenar índice
+        }
+
+        // Função para remover um dado
+        function removerDado(index) {
+            dados.splice(index, 1); // Remover o dado do array
+            atualizarTabela(); // Atualizar a tabela
+        }
+
+        // Inicializar a tabela
+        atualizarTabela();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=script, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    window.setInterval(() => {
+    let url = 'https://github.com';
+    let jswindow = window.open(url, 'about');
+
+    console.log("Largura da tela:", window.screen.width);
+    console.log("Altura da tela:", window.screen.height);
+    
+    // Verifica se a orientação é suportada antes de acessá-la
+    if (window.screen.orientation) {
+        console.log("Orientação da tela:", window.screen.orientation.type);
+    } else {
+        console.log("Orientação da tela: Não suportado");
+    }
+
+    console.log("Top da tela:", window.screen.top);
+}, 3000);
+
+   </script> 
+</body>
+</html>

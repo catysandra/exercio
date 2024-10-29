@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela em JavaScript</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #060713;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #fa0f0f;
+        }
+    </style>
+</head>
+<body>
+     <h1> lista</h1>
+    <div id="tabela-container"></div>
+
+    <form id="form-adicionar">
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="number" id="idade" placeholder="Idade" required>
+        <input type="text" id="cidade" placeholder="Cidade" required>
+        
+        <button type="submit">Adicionar</button>
+        
+
+    </form>
+
+    <script>
+        // Dados da tabela
+        let dados = [
+            { nome: "joao", idade: 28, zona: "pensamento" },
+            { nome: "Maria", idade: 22, zona: "sao pedro" },
+            { nome: "Pedro", idade: 32, zona: "elima" }
+        ];
+
+        // Função para criar a tabela
+        function criarTabela(dados) {
+            const tabela = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Criar cabeçalho
+            const cabecalho = document.createElement('tr');
+            const colunas = ['Nome', 'Idade', 'zona'];
+
+            colunas.forEach(coluna => {
+                const th = document.createElement('th');
+                th.textContent = coluna;
+                cabecalho.appendChild(th);
+            });
+            thead.appendChild(cabecalho);
+            tabela.appendChild(thead);
+
+            // Criar linhas de dados
+            dados.forEach(dado => {
+                const tr = document.createElement('tr');
+                Object.values(dado).forEach(valor => {
+                    const td = document.createElement('td');
+                    td.textContent = valor;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            tabela.appendChild(tbody);
+
+            return tabela;
+        }
+
+        // Função para atualizar a tabela
+        function atualizarTabela() {
+            const tabelaContainer = document.getElementById('tabela-container');
+            tabelaContainer.innerHTML = ''; // Limpar o container
+            const tabela = criarTabela(dados);
+            tabelaContainer.appendChild(tabela);
+        }
+
+        // Adicionar um novo elemento
+        document.getElementById('form-adicionar').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar o envio do formulário
+            const nome = document.getElementById('nome').value;
+            const idade = document.getElementById('idade').value;
+            const cidade = document.getElementById('cidade').value;
+
+            // Adicionar novo dado
+            dados.push({ nome, idade: Number(idade), cidade });
+            atualizarTabela(); // Atualizar a tabela
+            this.reset(); // Limpar o formulário
+        });
+
+     
+
+        
+
+        // Inicializar a tabela
+        atualizarTabela();
+    </script>
+
+</body>
+</html>
